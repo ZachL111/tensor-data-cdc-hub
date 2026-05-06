@@ -1,0 +1,9 @@
+# Field Notes
+
+The useful part of this repository is the small rule set around schema drift and partition skew.
+
+The domain cases cover `schema drift`, `lineage depth`, `partition skew`, and `quality gap`. They sit beside the smaller starter fixture so the project has both a compact scoring check and a domain-flavored review check.
+
+The model rewards signal and confidence, then pulls back for drag. In this fixture, `edge` shows where that pullback matters most.
+
+The extra check gives the repository a behavior path that can fail for a domain reason, not only a syntax reason.

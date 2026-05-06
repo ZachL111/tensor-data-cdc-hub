@@ -1,68 +1,40 @@
 # tensor-data-cdc-hub
 
-`tensor-data-cdc-hub` explores data engineering in C++. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`tensor-data-cdc-hub` is a C++ project in data engineering. Its focus is to build a C++ toolkit that studies cdc behavior through safe and unsafe fixtures, with remediation hints and local-only command execution.
 
-## Tensor Data Cdc Hub Notes
+## Why I Keep It Small
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+This is intentionally local and self-contained so it can be inspected without credentials, services, or seeded history.
 
-## Why This Exists
+## Tensor Data Cdc Hub Review Notes
 
-This project keeps the domain idea close to the tests. That makes it useful as a reference implementation, a small experiment, or a starting point for a more specialized tool.
+For a quick review, compare `lineage depth` with `partition skew` before reading the middle cases.
 
-## Code Tour
+## Included Behavior
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
+- `fixtures/domain_review.csv` adds cases for schema drift and lineage depth.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/tensor-data-cdc-walkthrough.md` walks through the case spread.
+- The C++ code includes a review path for `lineage depth` and `partition skew`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Feature Notes
+## Internal Model
 
-- Includes extended examples for pipeline state, including `surge` and `degraded`.
-- Documents quality gates tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Implementation Notes
+The C++ addition stays small enough to inspect in one sitting.
 
-The interesting part is the boundary between accepted and reviewed scenarios. Extended examples sit near that boundary so future edits can show whether the model became more permissive or more cautious. The C++ project uses a small library boundary and a compiled assertion harness.
-
-## Local Setup
-
-Install C++ and run the commands from the repository root. The project does not need credentials or a hosted service.
-
-## Example Scenarios
-
-`examples/extended_cases.csv` adds six named cases. I kept the names plain so failures are easy to read in a terminal: baseline, pressure, surge, degraded, recovery, and boundary.
-
-## Try It
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Validation
 
-## Tests
+The same command runs the local verification path. The highest-scoring domain case is `stress` at 173, which lands in `ship`. The most cautious case is `edge` at 103, which lands in `hold`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Scope
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Roadmap
-
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add one more data engineering fixture that focuses on a malformed or borderline input.
-
-## Boundaries
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
