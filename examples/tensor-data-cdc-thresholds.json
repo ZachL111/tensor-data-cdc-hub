@@ -1,0 +1,17 @@
+{
+  "repo": "tensor-data-cdc-hub",
+  "thresholds": {
+    "signal": 2,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 4,
+    "ship": 170,
+    "watch": 112
+  },
+  "terms": [
+    "schema drift",
+    "lineage depth",
+    "partition skew",
+    "quality gap"
+  ]
+}
